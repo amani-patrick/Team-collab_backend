@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { NotificationsGateway } from '../notifications/notifications.gateway';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Task } from '../entity/task.entity';
@@ -13,6 +14,7 @@ export class TasksService {
     @InjectRepository(Task)
     private tasksRepository: Repository<Task>,
     private projectsService: ProjectsService, 
+    private notificationsGateway: NotificationsGateway,
   ) {}
 
   // 1. Create Task (with FK and Scope Validation)
@@ -67,4 +69,19 @@ export class TasksService {
     this.tasksRepository.merge(task, dto);
     return this.tasksRepository.save(task);
   }
-}
+  async findOneByIdAndOrg(dto.taskId, organizationId);
+    if (!task) {
+        throw new NotFoundException(`Task with ID "${id}" not found in your organization.`);
+    }
+    // CRITICAL: 4. Broadcast the update event to the organization room
+    this.notificationsGateway.sendToOrganization(
+        organizationId, 
+        'taskUpdated', 
+        { 
+            taskId: updatedTask.id, 
+            status: updatedTask.status, 
+            title: updatedTask.title,
+            // Include minimal necessary data
+        }
+    );
+    return udpatedTask;

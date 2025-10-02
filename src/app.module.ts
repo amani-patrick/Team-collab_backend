@@ -6,6 +6,9 @@ import {TypeOrmModule } from '@nestjs/typeorm';
 import { ProjectsModule } from './projects/projects.module';
 import { TasksModule } from './tasks/tasks.module';
 import { TimeTrackingModule } from './time-tracking/time-tracking.module';
+import { NotificationsGateway } from './notifications/notifications.gateway';
+import { ReportsModule } from './reports/reports.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -21,9 +24,11 @@ import { TimeTrackingModule } from './time-tracking/time-tracking.module';
     }),
     ProjectsModule,
     TasksModule,
-    TimeTrackingModule
+    TimeTrackingModule,
+    ReportsModule,
+    UsersModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, NotificationsGateway],
 })
 export class AppModule {}

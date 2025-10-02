@@ -1,4 +1,4 @@
-import { Subscription } from '../../../node_modules/@angular-devkit/core/node_modules/rxjs/src/internal/Subscription';
+/* eslint-disable prettier/prettier */
 /* eslint-disable prettier/prettier */
 export enum UserRole  {
     OWNER = 'OWNER',
