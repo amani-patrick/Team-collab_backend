@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Organization } from './organization.entity';
 import { SubscriptionPlan } from '../common/enums/user-role.enum';

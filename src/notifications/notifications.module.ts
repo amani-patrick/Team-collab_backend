@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { Module } from '@nestjs/common';
 import { NotificationsGateway } from './notifications.gateway';
 import { AuthModule } from '../auth/auth.module'; 

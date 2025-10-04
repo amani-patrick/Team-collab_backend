@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
 import { Organization } from './organization.entity';
 import { UserRole } from '../common/enums/user-role.enum'; 

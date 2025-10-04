@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { IsNotEmpty, IsString, IsUUID,IsDateString } from 'class-validator';
 
 export class CreateTaskDto {

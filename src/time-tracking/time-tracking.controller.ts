@@ -1,6 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable prettier/prettier */
 import { Controller, Post, Body, UseGuards, Req } from '@nestjs/common';
 import { TimeTrackingService } from './time-tracking.service';
 import { StartTimerDto } from './dto/start-timer.dto';

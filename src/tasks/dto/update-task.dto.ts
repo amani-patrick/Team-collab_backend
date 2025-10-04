@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateTaskDto } from './create-task.dto';
 import { IsEnum, IsOptional } from 'class-validator';

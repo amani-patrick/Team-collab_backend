@@ -1,5 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { IsString, IsOptional, IsEmail, IsPhoneNumber } from 'class-validator';
+import { IsString, IsOptional, IsEmail, IsPhoneNumber, ValidateIf } from 'class-validator';
+
+
 
 class BaseUserDto {
   @IsOptional()
@@ -8,15 +10,20 @@ class BaseUserDto {
 
   @IsOptional()
   @IsEmail()
-  email?: string; // Note: Changing email often requires re-verification
+  email?: string;
 
-  @IsOptional()
-  @IsPhoneNumber('ZZ') // 'ZZ' is a placeholder for global number validation
+  @ValidateIf(o => o.phoneNumber !== undefined)
+  @IsPhoneNumber(
+    undefined,
+    {
+      message: 'The phone number must be a valid international number, including the country code (e.g., +15551234567).',
+    }
+  )
   phoneNumber?: string;
   
   @IsOptional()
   @IsString()
-  // Optional: Allow updating password (will require current password validation in service)
+  // Optional: Allow updating password 
   password?: string;
 }
 

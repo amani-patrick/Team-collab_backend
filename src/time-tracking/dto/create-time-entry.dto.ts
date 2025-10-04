@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { IsNotEmpty, IsUUID, IsNumber, IsDateString, IsOptional, IsBoolean } from 'class-validator';
 
 /**

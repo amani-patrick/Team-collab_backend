@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable prettier/prettier */
 export enum UserRole  {
     OWNER = 'OWNER',
     ADMIN = 'ADMIN',
@@ -19,7 +17,7 @@ export enum InviteStatus{
     PENDING= 'PENDING',
     ACCEPTED='ACCEPTED',
     REJECTED= 'REJECTED',
-    VOID='VOID,'
+    VOID='VOID',
 }
 
 export enum SubscriptionPlan {

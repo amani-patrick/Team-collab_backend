@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 export enum OnboardingStep {
   ACCOUNT_SETUP = 'ACCOUNT_SETUP', // Step 1: User created
   ORG_SETUP = 'ORG_SETUP', // Step 2: Org name, Industry, Size

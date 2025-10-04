@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
 import { Task } from './task.entity';
 import { User } from './user.entity';

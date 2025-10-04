@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -9,6 +8,8 @@ import { TimeTrackingModule } from './time-tracking/time-tracking.module';
 import { NotificationsGateway } from './notifications/notifications.gateway';
 import { ReportsModule } from './reports/reports.module';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { InvitesModule } from './invites/invites.module';
 
 @Module({
   imports: [
@@ -26,7 +27,9 @@ import { UsersModule } from './users/users.module';
     TasksModule,
     TimeTrackingModule,
     ReportsModule,
-    UsersModule
+    UsersModule,
+    AuthModule,
+    InvitesModule
   ],
   controllers: [AppController],
   providers: [AppService, NotificationsGateway],

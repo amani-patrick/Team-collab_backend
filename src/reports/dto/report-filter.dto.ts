@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { IsOptional, IsDateString, IsUUID } from 'class-validator';
 /**
  * Common filters for all reports, scoped by organization implicitly.

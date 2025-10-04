@@ -1,11 +1,8 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable prettier/prettier */
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { User } from './user.entity';
-import { BillingProfile } from './billing/billing-profile.entity';
-import { Subscription } from './subscription/subscription.entity';
-import { Invite } from './invite/invite.entity';
+import { BillingProfile } from './billing-profile.entity';
+import { Subscription } from './subscription.entity';
+import { Invite } from './invite.entity';
 import { OnboardingStep } from 'src/common/enums/onboarding-step.enum';
 
 @Entity('organizations') 

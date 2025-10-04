@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { NotificationsGateway } from '../notifications/notifications.gateway';
 import { InjectRepository } from '@nestjs/typeorm';
