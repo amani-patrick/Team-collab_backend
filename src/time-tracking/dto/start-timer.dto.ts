@@ -7,6 +7,5 @@ import { IsNotEmpty, IsUUID } from 'class-validator';
 export class StartTimerDto {
   @IsNotEmpty()
   @IsUUID()
-  // The Task the time is being logged against
   taskId: string;
 }

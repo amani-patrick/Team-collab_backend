@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import { Organization } from './../entity/organization.entity';
 import { VerifyCallback } from './../../node_modules/@types/jsonwebtoken/index.d';
-import { WebSocketGateway, SubscribeMessage, MessageBody, OnGatewayConnection, OnGatewayDisconnect, WebSocketServer } from '@nestjs/platform-socket.io';
+import { WebSocketGateway, SubscribeMessage, MessageBody, OnGatewayConnection, OnGatewayDisconnect, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -21,35 +22,35 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
   server: Server;
 
   constructor(
-    private jwtService JwtService,
+    private jwtService: JwtService,
     private configService: ConfigService,
   ){ }
-  async handleConnection(client: Socket,...args: any []){
-    const token=client.handshake.auth.token || client.handshake.query.token;
-    if(!otken){
+  handleConnection(client: Socket, ...args: any[]) {
+    const token = client.handshake.auth.token || client.handshake.query.token;
+    if (!token) {
       this.logger.warn(`Client disconnected(No token): ${client.id}`);
       return client.disconnect();
-  }
-  try{
-    const payload=this.jwtService.Verify(token,{
-      secret: this.configService.get('JWT_SECRET')
-    }) as JwtPayload;
+    }
+    try {
+      const payload = this.jwtService.verify(token, {
+        secret: this.configService.get<string>('JWT_SECRET'),
+      }) as JwtPayload;
 
-    (Client as any).user=payload;
-    const organizationRoom = `org-${payload.organizationId}`;
-    client.join(organizationRoom);
-    this.logger.log(`Client ${payload.email} connected to room: ${organizationRoom}`);
+      (client as any).user = payload;
+      const organizationRoom = `org-${payload.organizationId}`;
+      void client.join(organizationRoom);
+      this.logger.log(`Client ${payload.email} connected to room: ${organizationRoom}`);
 
-    this.server.to(organizationRoom).emit('userConnected', { 
-        userId: payload.userId, 
+      this.server.to(organizationRoom).emit('userConnected', {
+        userId: payload.userId,
         email: payload.email,
-        online: true
+        online: true,
       });
-  }catch{
-    this.logger.warn(`Client auth failed: ${client.id}`);
-    return client.disconnect()
+    } catch {
+      this.logger.warn(`Client auth failed: ${client.id}`);
+      return client.disconnect();
+    }
   }
-}
 handleDisconnect(client: Socket){
   const user=(client as any).user as JwtPayload;
   if(user){
@@ -62,8 +63,13 @@ handleDisconnect(client: Socket){
     });
 
   }
-  client.leaveAll();
-.}
+  // Leave all rooms except the default room (client.id)
+  for (const room of client.rooms) {
+    if (room !== client.id) {
+      void client.leave(room);
+    }
+  }
+}
 @SubscribeMessage('sendMessage')
 handleMessage(@MessageBody () data: any,client: Socket): void {
   const user=(client as any).user as JwtPayload;

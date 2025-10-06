@@ -19,12 +19,10 @@ export class Organization {
   @Column('int') 
   teamSize: number;
 
+  @Column({ type: 'uuid', nullable: true })
+  ownerId: string;
 
-
-  @Column({ type: 'uuid' })
-  ownerId: string; // FK to User.id
-
-  @OneToOne(() => User, { nullable: false })
+  @OneToOne(() => User, { nullable: true }) 
   @JoinColumn({ name: 'ownerId' })
   owner: User;
 
@@ -50,9 +48,9 @@ export class Organization {
   updatedAt: Date;
 
   @Column({
-  type: 'enum',
-  enum: OnboardingStep, 
-  default: OnboardingStep.ACCOUNT_SETUP,
-})
-onboardingStep: OnboardingStep;
+    type: 'enum',
+    enum: OnboardingStep, 
+    default: OnboardingStep.ACCOUNT_SETUP,
+  })
+  onboardingStep: OnboardingStep;
 }

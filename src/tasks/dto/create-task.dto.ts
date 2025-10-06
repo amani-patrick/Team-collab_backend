@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsUUID,IsDateString } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID,IsDateString,IsOptional } from 'class-validator';
 
 export class CreateTaskDto {
   @IsNotEmpty()
@@ -11,12 +11,10 @@ export class CreateTaskDto {
 
   @IsNotEmpty()
   @IsUUID()
-  // Ensure the task is linked to a valid project
   projectId: string;
 
   @IsOptional()
   @IsUUID()
-  // UUID of the User who is assigned this task
   assigneeId?: string; 
 
   @IsOptional()

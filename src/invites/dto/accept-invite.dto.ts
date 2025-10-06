@@ -1,34 +1,35 @@
-import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsString, IsNotEmpty, IsEmail, MinLength, MaxLength } from 'class-validator';
 
 export class AcceptInviteDto {
-  @IsNotEmpty()
+  /**
+   * The unique token provided in the invitation link/email. 
+   * Used to find and validate the invitation record.
+   */
   @IsString()
+  @IsNotEmpty()
   token: string;
 
-  @IsNotEmpty()
+  /**
+   * The new user's full name.
+   */
   @IsString()
-  @MinLength(8)
+  @IsNotEmpty()
+  @MinLength(2)
+  fullName: string;
+
+  /**
+   * The password the user is setting for their new account.
+   */
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(8) 
   password: string;
 
+  /**
+   * (Optional but recommended) The user's email, primarily for confirmation 
+   * against the email stored in the invitation record.
+   */
+  @IsEmail()
   @IsNotEmpty()
-  @IsString()
-  fullName: string;
+  email: string;
 }
-
-// src/auth/auth.service.ts (Add this new method)
-
-// ... existing code ...
-
-  
-}
-
-// src/auth/auth.controller.ts (Add this new endpoint)
-
-// ... existing code ...
-
-  // POST /auth/accept-invite
-  // Public endpoint - No Guards needed
-  @Post('accept-invite')
-  async acceptInvite(@Body() acceptInviteDto: AcceptInviteDto) {
-    return this.authService.acceptInvite(acceptInviteDto);
-  }

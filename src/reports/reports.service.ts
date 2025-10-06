@@ -60,6 +60,6 @@ export class ReportsService {
       .orderBy('totalDurationSeconds', 'DESC');
 
     // Execute the raw query and return
-    return query.getRawMany() as Promise<HoursByProject[]>;
+    return query.getRawMany();
   }
 }

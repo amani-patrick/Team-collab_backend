@@ -10,8 +10,8 @@ export interface JwtPayload {
   email: string;
   role: UserRole;
   organizationId: string; // CRITICAL for multi-tenancy
-  iat: number;
-  exp: number;
+  iat?: number;
+  exp?: number;
 }
 
 @Injectable()
@@ -25,7 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   // Called after token is verified. The returned object is attached to req.user.
-  async validate(payload: JwtPayload) {
+  validate(payload: JwtPayload) {
     return {
       userId: payload.userId,
       email: payload.email,

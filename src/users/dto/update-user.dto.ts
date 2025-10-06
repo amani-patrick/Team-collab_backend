@@ -6,7 +6,7 @@ import { IsString, IsOptional, IsEmail, IsPhoneNumber, ValidateIf } from 'class-
 class BaseUserDto {
   @IsOptional()
   @IsString()
-  name?: string;
+  fullName?: string;
 
   @IsOptional()
   @IsEmail()

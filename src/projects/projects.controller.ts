@@ -1,41 +1,63 @@
-import { Organization } from './../entity/organization.entity';
-import { Controller, Get, Post, Body, Patch, Param, Delete,UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { UserRole } from '../common/enums/user-role.enum';
-import { Request } from 'express'; // Used for type hinting the request object
+
+import { CurrentUser } from '../common/decorators/current-user.decorator'; 
+import type { AuthUser } from '../common/decorators/current-user.decorator'; 
 
 
-@UseGuards(JwtAuthGuard,RolesGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('projects')
 export class ProjectsController {
-    constructor(private readonly projectService: ProjectsService){   }
-    //Manager and owner are able to create projects
+    constructor(private readonly projectService: ProjectsService) { }
+
+    // Manager and owner are able to create projects
     @Post()
-    @Roles(UserRole.OWNER,UserRole.MANAGER)
-    create(@Body() createProjectDto: CreateProjectDto @Req() req: Request){
-        const { organizationId,userId} = req.user as any;
-        return this.projectService.create(createProjectDto,organizationId,userId);
+    @Roles(UserRole.OWNER, UserRole.MANAGER)
+    async create(
+        @Body() createProjectDto: CreateProjectDto, 
+        @CurrentUser() user: AuthUser,
+    ) {
+        const { organizationId, id: userId } = user;
+        return this.projectService.create(createProjectDto, organizationId, userId);
     }
 
-    //Everyone in organization can  view projects
+    // Everyone in organization can view projects
     @Get()
     @Roles(UserRole.OWNER, UserRole.MANAGER, UserRole.EMPLOYEE)
-    findAll(@Req() req: Request){
-        const { organizationId}=req.user as any;
-        return this.projectService.findAll(organizationId);
+    async findAll(
+        @CurrentUser() user: AuthUser,
+    ) {
+        const { organizationId } = user;
+        return await this.projectService.findAll(organizationId); 
     }
 
-    //Allow managers and owners can update projects
+    // Only managers and owners can update projects
     @Patch(':id')
-    @Roles(UserRole.OWNER,UserRole.MANAGER)
-    update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto ,@Req() req: Request){
-        const { organizationId}= req.user as any;
-        return this.projectService.update(id,updateProjectDto,organizationId);
+    @Roles(UserRole.OWNER, UserRole.MANAGER)
+    async update(
+        @Param('id') id: string, 
+        @Body() updateProjectDto: UpdateProjectDto, 
+        @CurrentUser() user: AuthUser,
+    ) {
+        const { organizationId } = user;
+        return this.projectService.update(id, updateProjectDto, organizationId);
     }
 
+    //Only Manager and Owner can delete projects
+    @Delete(':id')
+    @Roles(UserRole.OWNER, UserRole.MANAGER)
+    async remove(
+        @Param('id') id: string,
+        @CurrentUser() user: AuthUser,
+    ) {
+        const { organizationId } = user;
+        return this.projectService.remove(id, organizationId);
+    }
 }
