@@ -1,36 +1,40 @@
-// src/invites/invites.controller.ts
-
 import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
 import { InvitesService } from './invites.service';
 import { CreateInviteDto } from './dto/create-invite.dto';
 
-// --- Guards and Decorators for Security ---
 import { RolesGuard } from '../common/guards/roles.guard';
-import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'; // Now imported
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 
-// --- Type Imports ---
-import type { AuthUser } from '../common/decorators/current-user.decorator'; // Use import type
+import type { AuthUser } from '../common/decorators/current-user.decorator'; 
 import { UserRole } from '../common/enums/user-role.enum';
 
-// --- Global Guards for Private Endpoints ---
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('invites')
 export class InvitesController {
   constructor(
-    // Removed: private readonly authService: AuthService
     private readonly invitesService: InvitesService,
   ) {}
 
-  // POST /invites
+  @Get()
+  @Roles(UserRole.OWNER, UserRole.MANAGER)
+  findAll(@CurrentUser() user: AuthUser) {
+    return this.invitesService.findAllInOrganization(user.organizationId);
+  }
+
+  /**
+   * POST /invites - Create a new invite
+   * @param createInviteDto - The invite data
+   * @param user - The current authenticated user
+   * @returns The created invite
+   */
   @Post()
   @Roles(UserRole.OWNER, UserRole.MANAGER)
   async create(
     @Body() createInviteDto: CreateInviteDto, 
     @CurrentUser() user: AuthUser, 
   ) {
-    // Multi-Tenancy Key: organizationId is retrieved securely from the token payload.
     const { organizationId, id: userId } = user; 
 
     return this.invitesService.createInvite(

@@ -10,21 +10,18 @@ export class CreateTimeEntryDto {
 
   @IsNotEmpty()
   @IsDateString()
-  // The timestamp when the work started
+  
   startTime: Date;
 
   @IsOptional()
   @IsDateString()
-  // The timestamp when the work stopped
   endTime?: Date; 
 
   @IsNotEmpty()
   @IsNumber()
-  // The calculated duration in seconds. Should be validated server-side.
   durationInSeconds: number;
 
   @IsOptional()
   @IsBoolean()
-  // Flag to indicate a manual entry, typically requiring manager approval
   isManualEntry?: boolean = false;
 }

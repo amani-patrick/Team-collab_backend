@@ -18,7 +18,9 @@ export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
 
-  // Managers and Owners can create and assign new tasks.
+  /*
+  * Managers and Owners are only allowed to create tasks
+  */
   @Post()
   @Roles(UserRole.OWNER, UserRole.MANAGER)
   async create(
@@ -30,7 +32,9 @@ export class TasksController {
   }
 
 
-  // Everyone can view tasks within a project they have access to.
+  /*
+  * Everyone can view tasks within a project they have access to.
+  */
   @Get('by-project/:projectId')
   @Roles(UserRole.OWNER, UserRole.MANAGER, UserRole.EMPLOYEE)
   async findAllByProject(
@@ -41,8 +45,10 @@ export class TasksController {
     return this.tasksService.findAllByProject(projectId, organizationId);
   }
 
-  // Employees can update the status (e.g., mark as DONE). 
-  // Managers/Owners can update any field.
+  /*
+  * Employees can update the status (e.g., mark as DONE). 
+  * Managers/Owners can update any field.
+  */
   @Patch(':id')
   @Roles(UserRole.OWNER, UserRole.MANAGER, UserRole.EMPLOYEE)
   async update(
@@ -50,15 +56,12 @@ export class TasksController {
     @Body() updateTaskDto: UpdateTaskDto, 
     @CurrentUser() user: AuthUser
   ) {
-    // Note: The structure of AuthUser is: { organizationId, role, id: userId }
     const { organizationId, role } = user;
     
-    // Authorization Check:
     if (role === UserRole.EMPLOYEE) {
       const allowedKeys = ['status'];
       const updateKeys = Object.keys(updateTaskDto);
       
-      // Check if the update contains any key that is NOT 'status'
       if (updateKeys.some(key => !allowedKeys.includes(key))) {
           throw new BadRequestException('Employees can only update the task status.');
       }

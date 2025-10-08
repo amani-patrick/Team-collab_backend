@@ -23,9 +23,7 @@ class BaseUserDto {
   
   @IsOptional()
   @IsString()
-  // Optional: Allow updating password 
   password?: string;
 }
 
-// PartialType makes all fields optional for updating
 export class UpdateUserDto extends PartialType(BaseUserDto) {}

@@ -17,7 +17,9 @@ import type { AuthUser } from '../common/decorators/current-user.decorator';
 export class ProjectsController {
     constructor(private readonly projectService: ProjectsService) { }
 
-    // Manager and owner are able to create projects
+    /*
+    * Create project but owners and managers only are allowed
+    */
     @Post()
     @Roles(UserRole.OWNER, UserRole.MANAGER)
     async create(
@@ -28,7 +30,11 @@ export class ProjectsController {
         return this.projectService.create(createProjectDto, organizationId, userId);
     }
 
-    // Everyone in organization can view projects
+
+
+    /*
+    * Get all projects in your organization  and everyone can view them 
+    */
     @Get()
     @Roles(UserRole.OWNER, UserRole.MANAGER, UserRole.EMPLOYEE)
     async findAll(
@@ -38,7 +44,9 @@ export class ProjectsController {
         return await this.projectService.findAll(organizationId); 
     }
 
-    // Only managers and owners can update projects
+    /*
+    * Update project but owners and managers only are allowed
+    */
     @Patch(':id')
     @Roles(UserRole.OWNER, UserRole.MANAGER)
     async update(
@@ -50,7 +58,9 @@ export class ProjectsController {
         return this.projectService.update(id, updateProjectDto, organizationId);
     }
 
-    //Only Manager and Owner can delete projects
+    /*
+    * Only Manager and Owner can delete projects
+    */
     @Delete(':id')
     @Roles(UserRole.OWNER, UserRole.MANAGER)
     async remove(
@@ -68,7 +78,6 @@ export class ProjectsController {
         @CurrentUser() user: AuthUser,
     ) {
         const { organizationId } = user;
-        // The service logic already includes NotFoundException handling
         return this.projectService.findOne(id, organizationId);
     }
 }

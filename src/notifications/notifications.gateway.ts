@@ -51,6 +51,7 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
       return client.disconnect();
     }
   }
+
 handleDisconnect(client: Socket){
   const user=(client as any).user as JwtPayload;
   if(user){
@@ -63,7 +64,6 @@ handleDisconnect(client: Socket){
     });
 
   }
-  // Leave all rooms except the default room (client.id)
   for (const room of client.rooms) {
     if (room !== client.id) {
       void client.leave(room);

@@ -15,14 +15,23 @@ import type { AuthUser } from '../common/decorators/current-user.decorator';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // GET /users/me - Get the current authenticated user's profile
+  /**
+   * GET /users/me - Get the current authenticated user's profile
+   * @param user - The current authenticated user
+   * @returns The current authenticated user's profile
+   */
   @Get('me')
   @Roles(UserRole.OWNER, UserRole.MANAGER, UserRole.EMPLOYEE)
   async getMe(@CurrentUser() user: AuthUser) {
     return this.usersService.findOneById(user.id); 
   }
 
-  // PATCH /users/me - Update the current authenticated user's profile
+  /**
+   * PATCH /users/me - Update the current authenticated user's profile
+   * @param updateUserDto - The updated user profile data
+   * @param user - The current authenticated user
+   * @returns The updated user profile
+   */
   @Patch('me')
   @Roles(UserRole.OWNER, UserRole.MANAGER, UserRole.EMPLOYEE)
   updateMe(
@@ -32,8 +41,12 @@ export class UsersController {
     return this.usersService.update(user.id, updateUserDto);
   }
 
-  // GET /users - Get all users in the organization
-  // Restricted access: only Owners and Managers can view the full team list
+  /**
+   * GET /users - Get all users in the organization
+   * Restricted access: only Owners and Managers can view the full team list
+   * @param user - The current authenticated user
+   * @returns The list of users in the organization
+   */
   @Get()
   @Roles(UserRole.OWNER, UserRole.MANAGER)
   findAll(@CurrentUser() user: AuthUser) {

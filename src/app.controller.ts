@@ -8,7 +8,6 @@ export class AppController {
 
   /**
    * Provides a simple health check and API version endpoint.
-   * Responds to GET /
    */
   @Get()
   getApiStatus() {

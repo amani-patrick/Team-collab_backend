@@ -6,17 +6,17 @@ import { IsOptional, IsDateString, IsUUID } from 'class-validator';
 export class ReportFilterDto {
   @IsOptional()
   @IsDateString()
-  startDate?: string; // e.g., '2024-01-01'
+  startDate?: string; 
 
   @IsOptional()
   @IsDateString()
-  endDate?: string; // e.g., '2024-01-31'
+  endDate?: string; 
 
   @IsOptional()
   @IsUUID()
-  projectId?: string; // Filter by a specific project
+  projectId?: string; 
 
   @IsOptional()
   @IsUUID()
-  userId?: string; // Filter by a specific user (employee)
+  userId?: string; 
 }
