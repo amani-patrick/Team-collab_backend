@@ -15,12 +15,11 @@ import { User } from '../entity/user.entity';
 
 @Module({
   imports: [
-    UsersModule, // Provides UsersService and User Repository
+    UsersModule, 
     PassportModule,
     ConfigModule,
-    TypeOrmModule.forFeature([Organization, User]), // Used for transactional registration
+    TypeOrmModule.forFeature([Organization, User]), 
     
-    // Asynchronous JwtModule configuration using environment variables
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -32,6 +31,6 @@ import { User } from '../entity/user.entity';
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy], 
-  exports: [AuthService, JwtModule], // Export to be used by JwtAuthGuard and other modules
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}
