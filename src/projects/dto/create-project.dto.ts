@@ -1,9 +1,11 @@
-import { IsNotEmpty, IsString, IsOptional, IsDateString } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsDateString, IsArray, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { CreateTaskInProjectDto } from './create-task-in-project.dto';
 
 export class CreateProjectDto {
     @IsString()
     @IsNotEmpty()
-    name: string;
+    title: string;
 
     @IsString()
     @IsOptional()
@@ -11,5 +13,11 @@ export class CreateProjectDto {
 
     @IsDateString()
     @IsOptional()
-    dueDate?: string;
+    deadline?: string;
+
+    @IsArray()
+    @IsOptional()
+    @ValidateNested({ each: true })
+    @Type(() => CreateTaskInProjectDto)
+    tasks?: CreateTaskInProjectDto[];
 }

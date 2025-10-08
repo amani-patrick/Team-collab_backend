@@ -22,18 +22,15 @@ export class Subscription {
   })
   status: SubscriptionStatus;
 
-  @Column({ unique: true, nullable: true }) // Should be unique, but nullable until payment is set up
+  @Column({ unique: true, nullable: true })
   stripeCustomerId: string;
 
   @Column({ unique: true, nullable: true })
   stripeSubscriptionId: string;
 
-  // --- Relations ---
+  @Column({ type: 'uuid', unique: true })
+  organizationId: string; 
 
-  @Column({ type: 'uuid', unique: true }) // Ensure one subscription per organization
-  organizationId: string; // FK to Organization.id
-
-  // The owning side of a OneToOne relation.
   @OneToOne(() => Organization, (organization) => organization.subscription, {
     nullable: false,
     onDelete: 'CASCADE',
@@ -41,7 +38,6 @@ export class Subscription {
   @JoinColumn({ name: 'organizationId' })
   organization: Organization;
 
-  // --- Timestamps ---
   @CreateDateColumn()
   createdAt: Date;
 

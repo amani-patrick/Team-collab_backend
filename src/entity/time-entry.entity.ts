@@ -17,16 +17,14 @@ export class TimeEntry {
   durationInSeconds: number;
   
   @Column({ type: 'boolean', default: false })
-  isManualEntry: boolean; // For manual entry approval flow
+  isManualEntry: boolean; 
 
-  // FK to Task
   @Column({ type: 'uuid' })
   taskId: string;
 
   @ManyToOne(() => Task, (task) => task.timeEntries, { onDelete: 'CASCADE' })
   task: Task;
 
-  // FK to User (Who logged the time)
   @Column({ type: 'uuid' })
   userId: string;
 

@@ -17,21 +17,15 @@ export class Project {
   @Column({ type: 'date', nullable: true })
   deadline: Date;
 
-  // Multi-tenancy FK
   @Column({ type: 'uuid' })
   organizationId: string;
 
   @ManyToOne(() => Organization, { onDelete: 'CASCADE' })
   organization: Organization;
   
-  // Who created/owns the project (optional)
-  @Column({ type: 'uuid' })
-  createdByUserId: string;
-
-  @ManyToOne(() => User)
+  @ManyToOne(() => User) 
   createdBy: User;
 
-  // Relations
   @OneToMany(() => Task, (task) => task.project)
   tasks: Task[];
   

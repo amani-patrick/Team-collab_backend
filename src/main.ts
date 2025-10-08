@@ -16,12 +16,8 @@ async function bootstrap() {
         }),
     );
 
-    // 2.Set a versioned path prefix for the entire API
-    // All routes will start with /api/v1
     app.setGlobalPrefix('api/v1');
 
-    // 3. CORS: Enable Cross-Origin Resource Sharing
-    // In production, restrict 'origin' to your frontend domain(s).
     app.enableCors({
         origin: true, 
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
@@ -30,7 +26,7 @@ async function bootstrap() {
 
     const port = process.env.PORT || 3000;
     await app.listen(port, () => {
-        console.log(`Server is running on: ${process.env.NODE_ENV}`);
+        console.log(`Server is running on: ${port}`);
         console.log(`Listening on http://localhost:${port}/api/v1`);
     });
 }

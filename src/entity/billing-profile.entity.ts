@@ -10,7 +10,7 @@ export class BillingProfile {
   addressLine1: string;
 
   @Column({ nullable: true })
-  addressLine2: string; // Optional
+  addressLine2: string; 
 
   @Column()
   city: string;
@@ -22,17 +22,14 @@ export class BillingProfile {
   postalCode: string;
 
   @Column({ nullable: true })
-  taxId: string; // Optional
+  taxId: string; 
 
   @Column({ nullable: true })
-  phoneNumber: string; // Optional
+  phoneNumber: string; 
 
-  // --- Relations ---
+  @Column({ type: 'uuid', unique: true }) 
+  organizationId: string; 
 
-  @Column({ type: 'uuid', unique: true }) // Ensure one profile per organization
-  organizationId: string; // FK to Organization.id
-
-  // The owning side of a OneToOne relation.
   @OneToOne(() => Organization, (organization) => organization.billingProfile, {
     nullable: false,
     onDelete: 'CASCADE',
@@ -40,7 +37,6 @@ export class BillingProfile {
   @JoinColumn({ name: 'organizationId' })
   organization: Organization;
 
-  // --- Timestamps ---
   @CreateDateColumn()
   createdAt: Date;
 

@@ -43,7 +43,6 @@ export class Invite {
   })
   organization: Organization;
 
-  // --- Timestamps ---
   @CreateDateColumn()
   createdAt: Date;
 }

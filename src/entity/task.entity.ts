@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn, JoinColumn } from 'typeorm';
 import { Project } from './project.entity';
 import { User } from './user.entity';
 import { TimeEntry } from './time-entry.entity';
@@ -32,14 +32,13 @@ export class Task {
   @ManyToOne(() => Project, (project) => project.tasks, { onDelete: 'CASCADE' })
   project: Project;
 
-  // FK to Assignee (User)
   @Column({ type: 'uuid', nullable: true })
   assigneeId: string;
 
   @ManyToOne(() => User)
+  @JoinColumn({ name: 'assigneeId' })
   assignee: User;
-  
-  // Relations
+
   @OneToMany(() => TimeEntry, (timeEntry) => timeEntry.task)
   timeEntries: TimeEntry[];
 

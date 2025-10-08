@@ -14,10 +14,10 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column({ select: false }) // IMPORTANT: Don't select this by default!
+  @Column({ select: false }) 
   passwordHash: string;
 
-  @Column({ nullable: true }) // Optional
+  @Column({ nullable: true }) 
   phoneNumber: string;
 
   @Column({
@@ -27,19 +27,16 @@ export class User {
   })
   role: UserRole;
 
-  // --- Relations ---
 
   @Column({ type: 'uuid' })
-  organizationId: string; // FK to Organization.id
+  organizationId: string; 
 
-  // A user belongs to one organization
   @ManyToOne(() => Organization, (organization) => organization.users, {
     nullable: false,
-    onDelete: 'CASCADE', // If organization is deleted, users are also deleted (adjust as needed)
+    onDelete: 'CASCADE', 
   })
   organization: Organization;
 
-  // --- Timestamps ---
   @CreateDateColumn()
   createdAt: Date;
 

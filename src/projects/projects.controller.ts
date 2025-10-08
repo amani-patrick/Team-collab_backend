@@ -60,4 +60,15 @@ export class ProjectsController {
         const { organizationId } = user;
         return this.projectService.remove(id, organizationId);
     }
+
+    @Get(':id')
+    @Roles(UserRole.OWNER, UserRole.MANAGER, UserRole.EMPLOYEE)
+    async findOne(
+        @Param('id') id: string,
+        @CurrentUser() user: AuthUser,
+    ) {
+        const { organizationId } = user;
+        // The service logic already includes NotFoundException handling
+        return this.projectService.findOne(id, organizationId);
+    }
 }
